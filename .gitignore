@@ -7,11 +7,9 @@
 
 # Test binary, built with `go test -c`
 *.test
-
+etc/unit_test.env
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
-
-unit_test.env
