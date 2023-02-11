@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	
 )
 
 //定一个全局变量用于客户端连接,在包初始化init 加载

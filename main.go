@@ -53,4 +53,5 @@ func main() {
 	for _, bucket := range lsRes.Buckets {
 		fmt.Println("Buckets:", bucket.Name)
 	}
+	
 }
