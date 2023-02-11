@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
-	
 )
 
 //定一个全局变量用于客户端连接,在包初始化init 加载
@@ -55,6 +54,7 @@ func TestUploadFile(t *testing.T) {
 //初始化oss-client，等下给其他的所有测试用例使用
 func init() {
 	c, err := oss.New(OssEndpoint, AccessKey, AccessSecret)
+	fmt.Println(OssEndpoint)
 	if err != nil {
 		//如果有报错就让程序奔溃
 		panic(err)

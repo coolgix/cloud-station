@@ -1,4 +1,3 @@
 {
-    "go.testEnvFile": "${workspaceFolder}/etc/test.env",
-    "files.autoSave": "afterDelay"
+    "go.testEnvFile": "${workspaceFolder}/etc/unit_test.env"
 }
