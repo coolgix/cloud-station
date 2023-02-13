@@ -11,16 +11,19 @@ import (
 //修改这些变量，控制程序的运行逻辑
 var (
 	//程序内置
-	acessKey    = "LTAI5tEGEMZEPfea7PHR7QJd"
-	acessSecret = "OyURpvcKPUL08pScTic54sRNhUt3aw"
-	endpoint    = "oss-cn-beijing.aliyuncs.com"
+	acessKey    = "xx"
+	acessSecret = "xx"
+	endpoint    = "xx"
 
 	//默认配置
-	bucketName = "devcloud-station-a"
+	bucketName = "xx"
 
 	//用户需要传递参数
 	//期望用户自己输入（cli/GUI）
 	uploadFile = ""
+
+	//help
+	help = false
 )
 
 //实现文件上传的函数
@@ -58,9 +61,21 @@ func validata() error {
 //cli参数加载
 func loadParams() {
 	//设置参数
+	flag.BoolVar(&help, "h", false, "打印帮助信息")
 	flag.StringVar(&uploadFile, "f", "", "上传文件的名称")
 	//通过动作传递参数，parse解析“-f ”
 	flag.Parse()
+}
+
+//打印使用说明
+func usage() {
+	//1、打印一些描述信息
+	fmt.Fprintf(os.Stderr, `cloud-station version:1.0 
+	Usage: cloud-station [-h] -f <upload_file_path>
+	Options:
+	`)
+	//2、参数选项信息,打印当前默认的参数选项
+	flag.PrintDefaults()
 }
 
 func main() {
