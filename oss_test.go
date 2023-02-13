@@ -38,13 +38,20 @@ func TestBucketList(t *testing.T) {
 
 //测试TestUploadFile的功能是否正常
 func TestUploadFile(t *testing.T) {
-	bucket, err := client.Bucket("my-bucket")
+	bucket, err := client.Bucket(BucketName) //属于客户端的方法
 	if err != nil {
 		// HandleError(err)
 		t.Log(err)
 	}
 
-	err = bucket.PutObjectFromFile("my-object", "LocalFile")
+	//bucket的操作，增删改查
+	//PutObjectFromFile 上传文件的操作
+	//常见我们文件需要创建一个文件夹
+	//云商的ossserver 会根据你的key 路径结构,自动帮你创建目录
+	//objectKey 上传到bucket里面对象的名称有路径的
+	//mydir/test.go ,oss server 会自动创建一个mydir目录，执行一个mkdir -pv 的操作
+	//测试 给予一个具体的路径名称,然后把测试用例文件上传到了mydir下
+	err = bucket.PutObjectFromFile("mydir/test.go", "oss_test.go")
 	if err != nil {
 		// HandleError(err)
 		t.Log(err)
