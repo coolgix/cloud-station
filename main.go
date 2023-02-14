@@ -11,12 +11,12 @@ import (
 //修改这些变量，控制程序的运行逻辑
 var (
 	//程序内置
-	acessKey    = "xx"
-	acessSecret = "xx"
-	endpoint    = "xx"
+	acessKey    = "LTAI5tEGEMZEPfea7PHR7QJd"
+	acessSecret = "OyURpvcKPUL08pScTic54sRNhUt3aw"
+	endpoint    = "oss-cn-beijing.aliyuncs.com"
 
 	//默认配置
-	bucketName = "xx"
+	bucketName = "devcloud-station-a"
 
 	//用户需要传递参数
 	//期望用户自己输入（cli/GUI）
@@ -41,7 +41,19 @@ func upload(file_Path string) error {
 	}
 
 	//3、上传文件到这个bucket
-	return bucket.PutObjectFromFile(file_Path, file_Path)
+	if err := bucket.PutObjectFromFile(file_Path, file_Path); err != nil {
+		return nil
+	}
+
+	//4、输出上传文件的url
+	downloadURL, err := bucket.SignURL(file_Path, oss.HTTPGet, 60*60*24)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("文件下载URL: %s \n", downloadURL)
+	fmt.Println("请在1天之内下载.")
+
+	return nil
 }
 
 //参数合法性检查
@@ -65,14 +77,20 @@ func loadParams() {
 	flag.StringVar(&uploadFile, "f", "", "上传文件的名称")
 	//通过动作传递参数，parse解析“-f ”
 	flag.Parse()
+
+	//判断cli使用是否正常，如果异常是否打印help信息
+	if help {
+		usage()
+		os.Exit(0)
+	}
 }
 
 //打印使用说明
 func usage() {
 	//1、打印一些描述信息
 	fmt.Fprintf(os.Stderr, `cloud-station version:1.0 
-	Usage: cloud-station [-h] -f <upload_file_path>
-	Options:
+Usage: cloud-station [-h] -f <upload_file_path>
+Options:
 	`)
 	//2、参数选项信息,打印当前默认的参数选项
 	flag.PrintDefaults()
@@ -85,6 +103,7 @@ func main() {
 	//参数验证
 	if err := validata(); err != nil {
 		fmt.Printf("参数校验异常：%s\n", err)
+		usage()
 		os.Exit(1)
 	}
 
