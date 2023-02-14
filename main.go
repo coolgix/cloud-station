@@ -11,12 +11,12 @@ import (
 //修改这些变量，控制程序的运行逻辑
 var (
 	//程序内置
-	acessKey    = "LTAI5tEGEMZEPfea7PHR7QJd"
-	acessSecret = "OyURpvcKPUL08pScTic54sRNhUt3aw"
-	endpoint    = "oss-cn-beijing.aliyuncs.com"
+	acessKey    = "xx"
+	acessSecret = "xx"
+	endpoint    = "xx"
 
 	//默认配置
-	bucketName = "devcloud-station-a"
+	bucketName = "xx"
 
 	//用户需要传递参数
 	//期望用户自己输入（cli/GUI）
