@@ -4,6 +4,7 @@ package aliyun
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/cloud-station/store"
@@ -14,11 +15,42 @@ var (
 	_ store.Uploader = &AliOssStore{}
 )
 
+//抽象出一个结构体，把参数选项传递到结构体里面
+type Options struct {
+	Endpoint     string
+	Accesskey    string
+	AccessSecret string
+}
+
+func (o *Options) Validate() error {
+	//校验参数逻辑
+	//校验三个参数全部不为空
+	if o.Endpoint == "" || o.Accesskey == "" || o.AccessSecret == "" {
+		return fmt.Errorf("endpoint,access_key,access_secret has one empty")
+	}
+	return nil
+}
+
+//抽象出链接客户端的环境变量用于单元测试的init()链接客户端函数
+func NewDefaultAliOssStore() (*AliOssStore, error) {
+	return NewAliOssStore(&Options{
+		Endpoint:     os.Getenv("ALI_OSS_ENDPOINT"),
+		Accesskey:    os.Getenv("ALI_AK"),
+		AccessSecret: os.Getenv("ALI_SK"),
+	})
+}
+
 //AliOssStore 对象的构造函数
 //构造一个客户端链接 oss
 //endpoint, accesskey, accessSecret string 构造出链接oss的对象
-func NewAliOssStore(endpoint, accesskey, accessSecret string) (*AliOssStore, error) {
-	c, err := oss.New(endpoint, accesskey, accessSecret)
+func NewAliOssStore(opts *Options) (*AliOssStore, error) {
+	//链接客户端前调用下参数校验逻辑
+	if err := opts.Validate(); err != nil {
+		return nil, err
+	}
+
+	//客户端链接逻辑
+	c, err := oss.New(opts.Endpoint, opts.Accesskey, opts.AccessSecret)
 	if err != nil {
 		return nil, err
 	}

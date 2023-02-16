@@ -48,7 +48,8 @@ func TestUploadError(t *testing.T) {
 //通过init 编写uploader 的实例化逻辑
 func init() {
 
-	ali, err := aliyun.NewAliOssStore(OssEndpoint, AccessKey, AccessSecret)
+	ali, err := aliyun.NewDefaultAliOssStore()
+
 	if err != nil {
 		panic(err)
 	}
