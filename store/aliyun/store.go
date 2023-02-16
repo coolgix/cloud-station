@@ -16,6 +16,7 @@ var (
 
 //AliOssStore 对象的构造函数
 //构造一个客户端链接 oss
+//endpoint, accesskey, accessSecret string 构造出链接oss的对象
 func NewAliOssStore(endpoint, accesskey, accessSecret string) (*AliOssStore, error) {
 	c, err := oss.New(endpoint, accesskey, accessSecret)
 	if err != nil {
@@ -31,6 +32,7 @@ type AliOssStore struct {
 	client *oss.Client
 }
 
+//基于NewAliOssStore 构造函数实现文件上传功能
 func (s *AliOssStore) Upload(bucketName string, objectKey string, fileName string) error {
 	//2、获取bucket对象
 	bucket, err := s.client.Bucket(bucketName)

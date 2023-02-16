@@ -34,6 +34,17 @@ func TestUpload(t *testing.T) {
 	}
 }
 
+//添加测试err的用例
+func TestUploadError(t *testing.T) {
+	//使用assert 编写测试用例的断言
+	//通过new获取一个断言实例
+	should := assert.New(t)
+
+	err := uploader.Upload(BucketName, "test.txt", "store_testxxx.go")
+	should.Error(err, "An error is expected but got nil.")
+
+}
+
 //通过init 编写uploader 的实例化逻辑
 func init() {
 
