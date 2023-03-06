@@ -28,6 +28,8 @@ func TestUpload(t *testing.T) {
 	should := assert.New(t)
 
 	err := uploader.Upload(BucketName, "test.txt", "store_test.go")
+	//如果不用断言库 就需要自己写if err == nil{}
+	//封装：assert库 两个对象的比较封装为(断言)
 	if should.NoError(err) {
 		//没有Erro开启下一个步骤
 		t.Log("upload ok")

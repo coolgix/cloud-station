@@ -1,5 +1,9 @@
 package aws
 
+func NewAwsOssStore() *AwsOssStore {
+	return &AwsOssStore{}
+}
+
 //定义对象
 type AwsOssStore struct {
 }

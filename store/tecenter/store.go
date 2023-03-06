@@ -1,5 +1,10 @@
 package tecenter
 
+func NewTxOssStore *TxOssStore {
+	return &TxOssStore{}
+}
+
+
 //定义对象
 type TxOssStore struct {
 }
