@@ -1,9 +1,8 @@
-package tecenter
+package tx
 
-func NewTxOssStore *TxOssStore {
+func NewTxOssStore() *TxOssStore {
 	return &TxOssStore{}
 }
-
 
 //定义对象
 type TxOssStore struct {
