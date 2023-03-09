@@ -19,6 +19,12 @@ var (
 	uploadFile   string
 )
 
+//默认值参数
+var (
+	default_ak = "xx"
+	default_sk = "xxx"
+)
+
 //定义命令名字
 var UploadCmd = &cobra.Command{
 	Use:     "upload",
@@ -34,11 +40,13 @@ var UploadCmd = &cobra.Command{
 		)
 		switch ossProvider {
 		case "aliyun":
-			uploader, err = aliyun.NewAliOssStore(&aliyun.Options{
+			aliOpts := &aliyun.Options{
 				Endpoint:     ossEndpoint,
 				Accesskey:    accessKey,
 				AccessSecret: accessSecret,
-			})
+			}
+			setAliDefault(aliOpts)
+			uploader, err = aliyun.NewAliOssStore(aliOpts)
 		case "tx":
 			uploader = tx.NewTxOssStore()
 
@@ -55,6 +63,18 @@ var UploadCmd = &cobra.Command{
 		//使用Uploader 来上传文件
 		return uploader.Upload(bucketName, uploadFile, uploadFile)
 	},
+}
+
+//处理aliOpts 默认值
+func setAliDefault(opts *aliyun.Options) {
+	if opts.Accesskey == "" {
+		opts.Accesskey = default_ak
+	}
+
+	if opts.AccessSecret == "" {
+		opts.AccessSecret = default_sk
+	}
+
 }
 
 //参数的校验
