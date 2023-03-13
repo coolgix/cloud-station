@@ -12,6 +12,20 @@ import (
 
 var (
 	//接口对象是否实现接口的强制约束
+	//_ store.Uploader 我不需要这个变量的值 只做变量类型的判断
+	//&AliOssStore 这个对象必须满足store.Uploader 这个类型
+
+	// _ store.Uploader = &AliOssStore{} 申明了一个空对象，至少需要一个指针
+	//nil 空指针，nil有类型
+	//申明一个指针类型
+	// a *AliOssStore = nil a是这样一个AliOssStore类型的指针
+	//如何把一个nil 转换为 有指定类型的变量
+	// a int =16
+	// b int64 = int64(a)
+	// int64 是类型，a 是指针
+	// (int64类型)(值)
+	// (*AliOssStore)(nil) //获得类型
+	//类型断言
 	_ store.Uploader = &AliOssStore{}
 )
 
@@ -55,13 +69,17 @@ func NewAliOssStore(opts *Options) (*AliOssStore, error) {
 		return nil, err
 	}
 	return &AliOssStore{
-		client: c,
+		client:   c,
+		listener: NewDefaultProgressListener(),
 	}, nil
 }
 
 //需要阿里的客户端使用
 type AliOssStore struct {
+	//阿里云oss client，私有变脸，不运行外部
 	client *oss.Client
+	//进度条实现,依赖Listener的实现
+	listener oss.ProgressListener
 }
 
 //基于NewAliOssStore 构造函数实现文件上传功能
@@ -73,7 +91,7 @@ func (s *AliOssStore) Upload(bucketName string, objectKey string, fileName strin
 	}
 
 	//3、上传文件到这个bucket
-	if err := bucket.PutObjectFromFile(objectKey, fileName); err != nil {
+	if err := bucket.PutObjectFromFile(objectKey, fileName, oss.Progress(s.listener)); err != nil {
 		return nil
 	}
 
