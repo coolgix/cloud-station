@@ -11,10 +11,7 @@ import (
 
 //构造函数
 func NewDefaultProgressListener() *ProgressListener {
-	return &ProgressListener{
-		//初始化bar对象
-
-	}
+	return &ProgressListener{}
 }
 
 type ProgressListener struct {
